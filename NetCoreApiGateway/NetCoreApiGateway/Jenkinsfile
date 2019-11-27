@@ -1,0 +1,33 @@
+def bucket = 'temporal123'
+
+pipeline {
+  agent any
+  
+  environment {
+    AWS_ACCESS_KEY_ID = credentials('aws.id')
+    AWS_SECRET_ACCESS_KEY = credentials('aws.key')
+    AWS_REGION = "us-east-1"
+    CI = "true"
+  }
+  stages {
+   stage('Build') {
+	  steps {
+		sh 'dotnet publish -c Release'
+		sh 'zip ${commitID()}.zip publish'
+	  }      
+   }
+   
+   stage('Push File to AWS S3') {
+	  steps {
+	    sh 'aws s3 cp ${commitID()}.zip s3://${bucket}'
+	  }      
+   }
+  }
+}
+
+def commitID() {    
+	sh 'git rev-parse HEAD > .git/commitID'    
+	def commitID = readFile('.git/commitID').trim()    
+	sh 'rm .git/commitID'    
+	commitID 
+}
