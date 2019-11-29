@@ -2,7 +2,7 @@ def bucket = 'temporal123'
 
 pipeline {
   agent {
-        docker { image 'microsoft/aspnetcore:2.1' }
+        docker { image 'mcr.microsoft.com/dotnet/core/sdk:2.1' }
     }
   
   environment {
