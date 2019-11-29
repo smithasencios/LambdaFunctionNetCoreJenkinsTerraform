@@ -1,7 +1,9 @@
 def bucket = 'temporal123'
 
 pipeline {
-  agent { label 'WindowsDocker' }
+  agent {
+        docker { image 'microsoft/aspnetcore:2.1' }
+    }
   
   environment {
     AWS_ACCESS_KEY_ID = credentials('aws.id')
