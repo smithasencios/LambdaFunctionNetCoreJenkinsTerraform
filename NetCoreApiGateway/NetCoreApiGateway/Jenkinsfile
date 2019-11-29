@@ -1,7 +1,7 @@
 def bucket = 'temporal123'
 
 pipeline {
-  agent any
+  agent { label 'WindowsDocker' }
   
   environment {
     AWS_ACCESS_KEY_ID = credentials('aws.id')
